@@ -57,9 +57,9 @@
                           // for each bot based on tests performed with the QTI tests. Any values less
                           // than Threshold will be considered white. Above Threshold, black.
 
-#define Cthreshold 50  
-#define Rthreshold 50  
-#define Lthreshold 50  
+#define Cthreshold 70  
+#define Rthreshold 70  
+#define Lthreshold 40 
 
 // Parameters
 
