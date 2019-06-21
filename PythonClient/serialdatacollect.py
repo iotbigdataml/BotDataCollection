@@ -1,21 +1,4 @@
 ###################################################################################################################
-# File: serialreader.py
-# Course: 17640
-# Project: IoT Order Fulfillment Center
-# Copyright: Copyright (c) 2018 Carnegie Mellon University (ajl)
-# Versions:
-#	1.0 April 2018 - Initial write (ajl).
-#
-# Description: This class serves as an example for how to write an application that can read serial data from
-# an external device. The intent is to illustrate how to read data from an Arduino software serial port
-# This example could be used as a basis for writing an application to control and get status from the 
-# fultillment center robots.
-#
-# Parameters: Port or device file
-#
-# Internal Methods:
-#  None
-#
 # External Dependencies:
 #   - python 2.7
 #	- time
