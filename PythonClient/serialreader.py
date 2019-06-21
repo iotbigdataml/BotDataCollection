@@ -1,21 +1,4 @@
 ###################################################################################################################
-# File: serialreader.py
-# Course: 17640
-# Project: IoT Order Fulfillment Center
-# Copyright: Copyright (c) 2018 Carnegie Mellon University (ajl)
-# Versions:
-#	1.0 April 2018 - Initial write (ajl).
-#
-# Description: This class serves as an example for how to write an application that can read serial data from
-# an external device. The intent is to illustrate how to read data from an Arduino software serial port
-# This example could be used as a basis for writing an application to control and get status from the 
-# fultillment center robots.
-#
-# Parameters: Port or device file
-#
-# Internal Methods:
-#  None
-#
 # External Dependencies:
 #   - python 2.7
 #	- time
@@ -51,19 +34,31 @@ ser = serial.Serial (
     baudrate=9600,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS
+    bytesize=serial.EIGHTBITS,
+    timeout=0.5, # IMPORTANT, can be lower or higher
+    inter_byte_timeout=0.1 # Alternative
 )
 
 # Wait a couple of seconds for things to settle (typical in the embedded world ;-)
 
 time.sleep(2)
+string="datacollection/"+str(time.ctime(time.time()))+".csv";
+f=open(string,'w')
+
+
 
 # This is a pretty simple do-forever loop. If there is anything to read, we read it and print it.
-
-while True: 
-	if ser.inWaiting() > 0:				# Check to see if anything is in the buffer					
-		line =ser.readline()			# Read the buffer
-		print('read::' + line +'\n')
+try:
+	while True: 
+		if ser.in_waiting > 0:				# Check to see if anything is in the buffer					
+			line =ser.readline()	
+			if len(line) >30:
+				timestamp = (time.time())		# Read the buffer
+				print(line),
+				f.write(str(timestamp) + ',' + line)
+except KeyboardInterrupt:
+	print('interrupted')	
+	f.close()	
 
 
 

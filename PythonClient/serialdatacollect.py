@@ -1,15 +1,15 @@
 ###################################################################################################################
-# File: serialwriter.py
+# File: serialreader.py
 # Course: 17640
 # Project: IoT Order Fulfillment Center
 # Copyright: Copyright (c) 2018 Carnegie Mellon University (ajl)
 # Versions:
 #	1.0 April 2018 - Initial write (ajl).
 #
-# Description: This class serves as an example for how to write an application that can write serial data to
-# an external device. The intent is for this to illustrate how to write data to an Arduino software serial
-# port. This example could be used as a basis for writing an application to send command to fulfillment
-# center robots.
+# Description: This class serves as an example for how to write an application that can read serial data from
+# an external device. The intent is to illustrate how to read data from an Arduino software serial port
+# This example could be used as a basis for writing an application to control and get status from the 
+# fultillment center robots.
 #
 # Parameters: Port or device file
 #
@@ -31,42 +31,51 @@ import serial
 
 if len(sys.argv) < 2:
     print 'You need to supply the comm port/device on the command line.'
-    print 'python serialwriter <comm port or device path>'
+    print 'python serialreader <comm port or device path>'
     exit()
 else:
 	print
 	print '____________________________________________________________'		
-	print 'Writing to port ' + sys.argv[1]
+	print 'Reading from port ' + sys.argv[1]
 	print 'To stop, press control-C'
 	print '____________________________________________________________'
 	print
 
 # Here we define the serial port. This reflects the settings for the software serial port on the arduino.
-# Please refer to the companion arduino code: SoftSerialRead.ino. Note that no errors are trapped here in the 
+# Please refer to the companion arduino code: SoftSerialWrite.ino. Note that no errors are trapped here in the 
 # name of brevity. If the comm port/device doesn't exist, it will crash here. For your production code you should
 # probably add error handling here (try-catches).
 
-ser = serial.Serial(
+ser = serial.Serial (
     port=sys.argv[1],
     baudrate=9600,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS
+    bytesize=serial.EIGHTBITS,
+    timeout=0.5, # IMPORTANT, can be lower or higher
+    inter_byte_timeout=0.1 # Alternative
 )
 
 # Wait a couple of seconds for things to settle (typical in the embedded world ;-)
 
-time.sleep(1)
+time.sleep(2)
+string="datacollection/"+str(time.ctime(time.time()))+".csv";
+f=open(string,'w')
 
-# This is a pretty simple do-forever loop. We ask the user for some input and we write it out the specified
-# port.
 
-while True: 
 
-	message = raw_input('Enter message>> ')		# Get the data
-	message = message + '+'						# We append a '+' to the message. It tells the arduino its 
-											 	#  the end of the message. You can design any protocol you want.
-	b = str.encode(message)						# Puts the message into bytes
-	ser.write(b)								# Writes the bytes to the specified port 
-	ser.flush()									# We clear the port
+# This is a pretty simple do-forever loop. If there is anything to read, we read it and print it.
+try:
+	while True: 
+		if ser.in_waiting > 0:				# Check to see if anything is in the buffer					
+			line =ser.readline()	
+			if len(line) >30:
+				timestamp = (time.time())		# Read the buffer
+				print(line),
+				f.write(str(timestamp) + ',' + line)
+except KeyboardInterrupt:
+	print('interrupted')	
+	f.close()	
+
+
 
