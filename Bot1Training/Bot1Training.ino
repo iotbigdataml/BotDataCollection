@@ -178,7 +178,9 @@ void loop()
       radio.write(&msg,sizeof(msg));  
 
       
-    } else if ((leftQti <Lthreshold) && (centerQti>Cthreshold) && (rightQti<Rthreshold)) {
+    } 
+    // Case 1 
+    else if ((leftQti <Lthreshold) && (centerQti>Cthreshold) && (rightQti<Rthreshold)) {
       // centered on the line
       leftservo.write(CCWSFull+LWOffSet); 
       rightservo.write(CWSFull+RWOffSet);
@@ -187,7 +189,9 @@ void loop()
       radio.write(&msg,sizeof(msg));
 
       
-    } else  if ((leftQti>Lthreshold) && (centerQti<Cthreshold) && (rightQti<Rthreshold)) {
+    } 
+    // Case 2
+    else  if ((leftQti>Lthreshold) && (centerQti<Cthreshold) && (rightQti<Rthreshold)) {
       // Drifted right
       leftservo.write(CCWSSlow); 
       rightservo.write(CWSMid);
@@ -197,7 +201,9 @@ void loop()
     radio.write(&msg,sizeof(msg));
 
     
-    } else if ((leftQti<Lthreshold) && (centerQti<Cthreshold) && (rightQti>Rthreshold)) {
+    } 
+    // Case 3
+    else if ((leftQti<Lthreshold) && (centerQti<Cthreshold) && (rightQti>Rthreshold)) {
 
       // Drifted left
       leftservo.write(CCWSMid); 
@@ -208,7 +214,9 @@ void loop()
           radio.write(&msg,sizeof(msg));
 
           
-    } else if ((leftQti>Lthreshold) && (centerQti>Cthreshold) && (rightQti>Rthreshold) && shiprec==2) {
+    } 
+    // Case 4
+    else if ((leftQti>Lthreshold) && (centerQti>Cthreshold) && (rightQti>Rthreshold) && shiprec==2) {
       // At shipping
       Serial.println( "shipping" ); 
 //      radio.write(&shipping,sizeof(shipping));
@@ -222,7 +230,9 @@ void loop()
           radio.write(&msg,sizeof(msg));
 
           
-    } else if ((leftQti>Lthreshold) && (centerQti>Cthreshold) && (rightQti>Rthreshold) && shiprec!=2) {
+    } 
+    // Case 5
+    else if ((leftQti>Lthreshold) && (centerQti>Cthreshold) && (rightQti>Rthreshold) && shiprec!=2) {
       
      // centered on the line
       leftservo.write(CCWSFull+LWOffSet); 
@@ -232,7 +242,9 @@ void loop()
           radio.write(&msg,sizeof(msg));
 
           
-    }else if ((leftQti>Lthreshold) && (centerQti<Cthreshold) && (rightQti>Rthreshold) &&shiprec==0) {
+    }
+    // Case 6
+    else if ((leftQti>Lthreshold) && (centerQti<Cthreshold) && (rightQti>Rthreshold) &&shiprec==0) {
       // At receiving
       Serial.println( "receiving" ); 
 //      radio.write(&receiving,sizeof(receiving));
@@ -247,7 +259,9 @@ void loop()
 
           
 //Extra loop 
-    } else if((leftQti<Lthreshold) && (centerQti<Cthreshold) && (rightQti<Rthreshold)) {
+    } 
+    // Case 7
+    else if((leftQti<Lthreshold) && (centerQti<Cthreshold) && (rightQti<Rthreshold)) {
       
       
       if(flag==1){
@@ -279,7 +293,9 @@ void loop()
           
       }
     
-    }else if((leftQti<Lthreshold) && (centerQti>Cthreshold) && (rightQti>Rthreshold)){
+    }
+    // Case 8
+    else if((leftQti<Lthreshold) && (centerQti>Cthreshold) && (rightQti>Rthreshold)){
       // Drifted right
       leftservo.write(CCWSSlow); 
       rightservo.write(CWSMid);
@@ -289,7 +305,9 @@ void loop()
           radio.write(&msg,sizeof(msg));
 
           
-    }else if((leftQti>Lthreshold) && (centerQti>Cthreshold) && (rightQti<Rthreshold)){
+    }
+    // Case 9
+    else if((leftQti>Lthreshold) && (centerQti>Cthreshold) && (rightQti<Rthreshold)){
       // Drifted left
       leftservo.write(CCWSMid); 
       rightservo.write(CWSSlow);

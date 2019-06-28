@@ -16,7 +16,7 @@ SoftwareSerial mySerial(RX, TX, true);  // Here we define the serial port object
 
 
 RF24 radio(7, 8);                     // Chip enable (7), Chip Select (8)
-const byte address[6] = "01100";      // Radio address - use only the channels that match the
+const byte address[6] = "01011";      // Radio address - use only the channels that match the
                                       // numbers on your robots.
 
 
